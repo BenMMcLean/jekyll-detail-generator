@@ -75,9 +75,8 @@ jobs:
         find: "{{VERSION_PLACEHOLDER}}"
         replace: "${{ needs.version.outputs.version }}"
         regex: false
-    - name: Release Gem
-      uses: cadwallion/publish-rubygems-action@master
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
-        RELEASE_COMMAND: rake release
+    - name: Publish gem
+      uses: dawidd6/action-publish-gem@v1
+      with:
+        api_key: ${{secrets.RUBYGEMS_API_KEY}}
+        github_token: ${{secrets.GITHUB_TOKEN}}
