@@ -14,5 +14,5 @@ Gem::Specification.new do |spec|
   spec.files = ["lib/jekyll-detail-generator.rb"]
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "jekyll", "~> 3.8.3"
+  spec.add_dependency "jekyll", "~> 4.3.2"
 end
