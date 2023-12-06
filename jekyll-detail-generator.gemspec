@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "lib/jekyll/detail/generator/version"
-
 Gem::Specification.new do |spec|
   spec.name = "jekyll-detail-generator"
   spec.version = "1.0.0"
