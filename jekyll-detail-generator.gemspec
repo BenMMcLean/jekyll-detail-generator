@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = "jekyll-detail-generator"
-  spec.version = "1.0.0"
+  spec.version = {{VERSION_PLACEHOLDER}}
   spec.summary = "A Jekyll generator to create pages for each element of a collection"
   spec.authors = ["Ben McLean"]
   spec.email = ["benmclean007@gmail.com"]

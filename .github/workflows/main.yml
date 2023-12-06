@@ -74,6 +74,12 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v3
+      with:
+        find: "{{VERSION_PLACEHOLDER}}"
+        replace: "${{ needs.version.outputs.version }}"
+        regex: false
     - name: Release Gem
       uses: cadwallion/publish-rubygems-action@master
       env:
