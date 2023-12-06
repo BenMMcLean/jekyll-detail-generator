@@ -2,20 +2,71 @@ name: Ruby
 
 on:
   push:
-    branches:
-      - main
-
+    branches: [ "main", "develop", "release/**" ]
   pull_request:
+    branches: [ "main", "develop" ]
+
+permissions:
+  contents: write
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.gitversion.outputs.semVer }}
+      versionCode: ${{ steps.run_number.outputs.versionCode }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.6
+        with:
+          versionSpec: '5.x'
+      - name: Use GitVersion
+        id: gitversion # step id used as reference for output values
+        uses: gittools/actions/gitversion/execute@v0.9.6
+        with:
+          useConfigFile: true
+          configFilePath: ./gitversion.yml
+      - name: Display SemVer
+        run: |
+          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+      - name: run number with offset
+        id: run_number
+        env:
+          NUM: ${{ github.run_number }}
+        run: |
+          current_run_number=${{ github.run_number }}
+          new_number=$((current_run_number+600))
+          echo "versionCode=${new_number}" >> $GITHUB_OUTPUT
+      - run: echo ${{steps.run_number.outputs.versionCode}}
+  release:
+    needs:
+      - version
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: ${{ github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release') }}
+          tag_name: v${{ needs.version.outputs.version }}
+          release_name: Release ${{ needs.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
   build:
     runs-on: ubuntu-latest
+    needs:
+      - version
+      - release
     name: Ruby ${{ matrix.ruby }}
     strategy:
       matrix:
         ruby:
           - '3.2.2'
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up Ruby
