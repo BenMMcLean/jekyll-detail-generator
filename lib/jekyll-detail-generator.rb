@@ -37,6 +37,7 @@ module JekyllDetailGenerator
       self.read_yaml(base_path, @site.layouts[layout].name)
 
       self.data["item"] = item
+      self.data["title"] = title
     end
 
     # Placeholders that are used in constructing page URL.
