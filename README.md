@@ -1,24 +1,53 @@
-# Jekyll::Detail::Generator
+<p align="center">
+    <h1 align="center">Jekyll Detail Generator</h1>
+    <p align="center">
+        A Jekyll generator to create pages for each element of a collection.
+    </p>
+</p>
 
-TODO: Delete this and the text below, and describe your gem
+<div align="center">
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/jekyll/detail/generator`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Ruby](https://github.com/BenMMcLean/jekyll-detail-generator/actions/workflows/main.yml/badge.svg)](https://github.com/BenMMcLean/jekyll-detail-generator/actions/workflows/main.yml)
+[![Gem Version](https://badge.fury.io/rb/jekyll-detail-generator.svg)](https://badge.fury.io/rb/jekyll-detail-generator)
+
+</div>
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+    $ bundle add jekyll-detail-generator
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+    $ gem install jekyll-detail-generator
 
 ## Usage
 
-TODO: Write usage instructions here
+First, add the plugin to _config.yml:
+
+```yaml
+plugins:
+  - jekyll-detail-generator
+```
+
+Then, configure the generator so that it knows how to read your collection:
+
+```yaml
+detail_page_gen:
+  - collection: galleries
+    children_property: arts
+    layout: artdetail
+    title_property: title
+    url_property: identifier
+```
+
+In this case, the generator would look in the _galleries folder and scan through each file.
+It would expect the elements of the collection to be under the property "arts", and for
+each element to then contain a title and identifier property. Title will be used to title
+the page, identifier will be used to generate a unique url in the form of "/filename/url_property".
+Each generated page will use the layout artdetail.html, which is in turn passed each property of
+the element under "item".
 
 ## Development
 
